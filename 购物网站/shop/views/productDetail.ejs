@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= product.prod_name%> - 商品详情</title>
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <link rel="stylesheet" href="/stylesheets/productDetail.css"/>
+</head>
+<body>
+<div id="header">
+    <div class="wrap">
+        header
+        <div class="link">
+            <a href="/login">登录</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/reg">注册</a>
+        </div>
+    </div>
+</div>
+<ul id="nav" class="wrap">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">所有商品</a></li>
+    <li><a href="#">我的订单</a></li>
+    <li><a href="#">购物车</a></li>
+</ul>
+<div id="content">
+    <div id="product-info" class="clearfix">
+        <div id="product-imgs">
+            <%
+                var imgs = product.productImg;
+            %>
+            <div class="big-img">
+                <img src="/<%=imgs[0].img_src%>" alt=""/>
+            </div>
+            <ul class="img-list">
+                <%
+                    for(var i=0; i<imgs.length; i++){
+                %>
+                <li <%= i==0?'class=selected':''%>><img src="/<%=imgs[i].img_src%>" alt=""/></li>
+                <%
+                    }
+                %>
+            </ul>
+        </div>
+        <div id="product-basic">
+            <form id="product-form" action="/products/buy" method="post">
+                <input type="hidden" name="product-size" id="product-size"/>
+                <h1 class="form-item product-name"><%= product.prod_name%></h1>
+                <p class="form-item product-price">
+                    <%
+                        //[150, 100, 180]
+                        var size = product.productSize;
+                        size.sort(function(a,b){
+                            return a.size_price - b.size_price;
+                        });
+                    %>
+                    <%=size[0].size_price%> - <%=size[size.length-1].size_price%>
+                </p>
+                <div class="form-item product-size clearfix">
+                    <span style="float: left;">大小：</span>
+                    <ul class="product-size-list">
+                        <%
+                            for(var i=0; i<size.length; i++){
+                        %>
+                        <li data-price="<%=size[i].size_price%>"><%=size[i].size_num%></li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </div>
+                <div class="form-item product-num clearfix">
+                    <span style="float: left;">数量：</span>
+
+                    <!--<div class="num-input">
+                        <span class="num-minus">-</span>
+                        <input type="text" id="product-num" class="num-value"/>
+                        <span class="num-add">+</span>
+                    </div>
+
+                    <div class="num-input">
+                        <span class="num-minus">-</span>
+                        <input type="text" id="product-num2" class="num-value"/>
+                        <span class="num-add">+</span>
+                    </div>-->
+
+                    <input type="text" id="product-num"/>
+
+                </div>
+                <div class="form-item btns">
+                    <input type="submit" value="立即购买"/>
+                    <input type="button" value="加入购物车"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="product-detail">
+
+    </div>
+</div>
+<script src="/javascripts/jquery-1.11.3.min.js"></script>
+<script src="/javascripts/jquery.numinput-1.0.js"></script>
+<script src="/javascripts/productDetail.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+</head>
+<body>
+<form action="/users/regist" method="post" id="reg-form" class="form">
+    <h1>
+        注册：
+    </h1>
+    <p>
+        <label for="">用户名：</label>
+        <input id="username" type="text" name="username"/>
+    </p>
+    <p>
+        <label for="">密码：</label>
+        <input id="password" type="text" name="password"/>
+    </p>
+    <p>
+        <label for="">性别：</label>
+        <input type="radio" value="男" name="sex"/>男
+        <input type="radio" value="女" name="sex"/>女
+    </p>
+    <p>
+        <input type="submit" value="注册"/>
+    </p>
+</form>
+<script src="/javascripts/jquery-1.11.3.min.js"></script>
+<script>
+    $(function(){
+        $('#username').on('blur', function(){
+            var that = this;
+            if($.trim(this.value) == ""){
+                alert('请输入用户名!');
+            }else{
+                $.get('/users/checkUser', {username: this.value}, function (data) {
+                    if(data == 'fail'){
+                        $(that).after('<span class="error">用户名已存在</span>');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
